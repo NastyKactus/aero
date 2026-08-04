@@ -2867,6 +2867,25 @@ Battle::AbilityEffects::OnSwitchIn.add(:INTIMIDATE,
   }
 )
 
+Battle::AbilityEffects::OnSwitchIn.add(:UNNERVE,
+  proc { |ability, battler, battle, switch_in|
+    battle.pbShowAbilitySplash(battler)
+    battle.allOtherSideBatters(battler.index).each do |b|
+      next if !b.near?(battler)
+      check_item = true
+      if b.hasActiveAbility?(:CONTRARY)
+        check_item = false if b.statStageAtMax(:SPECIAL_ATTACK)
+      elsif b.statStageAtMin(:SPECIAL_ATTACK)
+        check_item = false
+      end
+      check_ability = b.pbLowerAttackStatStageIntimidate(battler)
+      b.pbAbilitiesOnIntimidated if check_ability
+      b.pbItemOnIntimidatedCheck if check_item
+    end
+    battle.pbHideAbilitySplash(battler)
+  }
+)
+
 Battle::AbilityEffects::OnSwitchIn.add(:INTREPIDSWORD,
   proc { |ability, battler, battle, switch_in|
     battler.pbRaiseStatStageByAbility(:ATTACK, 1, battler)

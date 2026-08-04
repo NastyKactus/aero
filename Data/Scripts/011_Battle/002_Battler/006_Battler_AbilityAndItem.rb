@@ -14,11 +14,11 @@ class Battle::Battler
       @hp = 0
       @fainted = true
       pbAbilitiesOnNeutralizingGasEnding
-    elsif hasActiveAbility?([:UNNERVE, :ASONECHILLINGNEIGH, :ASONEGRIMNEIGH])
+    elsif hasActiveAbility?([:ASONECHILLINGNEIGH, :ASONEGRIMNEIGH])
       # Treat self as fainted
       @hp = 0
       @fainted = true
-      pbItemsOnUnnerveEnding
+      pbItemsOnBlockEnding
     end
     # Treat self as fainted
     @hp = 0
@@ -38,7 +38,7 @@ class Battle::Battler
       Battle::AbilityEffects.triggerOnBattlerFainting(b.ability, b, self, @battle)
     end
     pbAbilitiesOnNeutralizingGasEnding if hasActiveAbility?(:NEUTRALIZINGGAS, true)
-    pbItemsOnUnnerveEnding if hasActiveAbility?([:UNNERVE, :ASONECHILLINGNEIGH, :ASONEGRIMNEIGH], true)
+    pbItemsOnBlockEnding if hasActiveAbility?([:ASONECHILLINGNEIGH, :ASONEGRIMNEIGH], true)
   end
 
   # Used for Emergency Exit/Wimp Out. Returns whether self has switched out.
@@ -173,7 +173,7 @@ class Battle::Battler
       pbAbilitiesOnNeutralizingGasEnding
     elsif [:UNNERVE, :ASONECHILLINGNEIGH, :ASONEGRIMNEIGH].include?(oldAbil) &&
           (suppressed || !@effects[PBEffects::GastroAcid])
-      pbItemsOnUnnerveEnding
+      pbItemsOnBlockEnding
     elsif oldAbil == :ILLUSION && @effects[PBEffects::Illusion]
       @effects[PBEffects::Illusion] = nil
       if !@effects[PBEffects::Transform]
@@ -387,7 +387,7 @@ class Battle::Battler
     return Battle::ItemEffects.triggerOnStatLoss(self.item, self, move_user, @battle)
   end
 
-  def pbItemsOnUnnerveEnding
+  def pbItemsOnBlockEnding
     @battle.pbPriority(true).each do |b|
       b.pbHeldItemTriggerCheck if b.item&.is_berry?
     end
