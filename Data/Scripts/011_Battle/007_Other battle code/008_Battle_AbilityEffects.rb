@@ -2945,7 +2945,7 @@ Battle::AbilityEffects::OnSwitchIn.add(:NEUTRALIZINGGAS,
     had_unnerve = battle.pbCheckGlobalAbility([:UNNERVE, :ASONECHILLINGNEIGH, :ASONEGRIMNEIGH])
     battler.ability_id = :NEUTRALIZINGGAS
     if had_unnerve && !battle.pbCheckGlobalAbility([:UNNERVE, :ASONECHILLINGNEIGH, :ASONEGRIMNEIGH])
-      battle.allBattlers.each { |b| b.pbItemsOnUnnerveEnding }
+      battle.allBattlers.each { |b| b.pbItemsOnBlockEnding }
     end
   }
 )
