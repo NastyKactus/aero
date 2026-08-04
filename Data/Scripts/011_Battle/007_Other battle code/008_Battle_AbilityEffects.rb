@@ -2870,15 +2870,15 @@ Battle::AbilityEffects::OnSwitchIn.add(:INTIMIDATE,
 Battle::AbilityEffects::OnSwitchIn.add(:UNNERVE,
   proc { |ability, battler, battle, switch_in|
     battle.pbShowAbilitySplash(battler)
-    battle.allOtherSideBatters(battler.index).each do |b|
+    battle.allOtherSideBattlers(battler.index).each do |b|
       next if !b.near?(battler)
       check_item = true
       if b.hasActiveAbility?(:CONTRARY)
         check_item = false if b.statStageAtMax(:SPECIAL_ATTACK)
-      elsif b.statStageAtMin(:SPECIAL_ATTACK)
+      elsif b.statStageAtMin?(:SPECIAL_ATTACK)
         check_item = false
       end
-      check_ability = b.pbLowerAttackStatStageIntimidate(battler)
+      check_ability = b.pbLowerSpAttackStatStageUnnerve(battler)
       b.pbAbilitiesOnIntimidated if check_ability
       b.pbItemOnIntimidatedCheck if check_item
     end
@@ -2942,9 +2942,9 @@ Battle::AbilityEffects::OnSwitchIn.add(:NEUTRALIZINGGAS,
     end
     # Trigger items upon Unnerve being negated
     battler.ability_id = nil   # Allows checking if Unnerve was active before
-    had_unnerve = battle.pbCheckGlobalAbility([:UNNERVE, :ASONECHILLINGNEIGH, :ASONEGRIMNEIGH])
+    had_unnerve = battle.pbCheckGlobalAbility([:ASONECHILLINGNEIGH, :ASONEGRIMNEIGH])
     battler.ability_id = :NEUTRALIZINGGAS
-    if had_unnerve && !battle.pbCheckGlobalAbility([:UNNERVE, :ASONECHILLINGNEIGH, :ASONEGRIMNEIGH])
+    if had_unnerve && !battle.pbCheckGlobalAbility([:ASONECHILLINGNEIGH, :ASONEGRIMNEIGH])
       battle.allBattlers.each { |b| b.pbItemsOnBlockEnding }
     end
   }
@@ -3064,14 +3064,6 @@ Battle::AbilityEffects::OnSwitchIn.add(:TURBOBLAZE,
   proc { |ability, battler, battle, switch_in|
     battle.pbShowAbilitySplash(battler)
     battle.pbDisplay(_INTL("{1} is radiating a blazing aura!", battler.pbThis))
-    battle.pbHideAbilitySplash(battler)
-  }
-)
-
-Battle::AbilityEffects::OnSwitchIn.add(:UNNERVE,
-  proc { |ability, battler, battle, switch_in|
-    battle.pbShowAbilitySplash(battler)
-    battle.pbDisplay(_INTL("{1} is too nervous to eat Berries!", battler.pbOpposingTeam))
     battle.pbHideAbilitySplash(battler)
   }
 )

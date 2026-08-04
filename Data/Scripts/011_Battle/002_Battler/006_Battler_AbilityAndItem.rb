@@ -171,7 +171,7 @@ class Battle::Battler
   def pbOnLosingAbility(oldAbil, suppressed = false)
     if oldAbil == :NEUTRALIZINGGAS && (suppressed || !@effects[PBEffects::GastroAcid])
       pbAbilitiesOnNeutralizingGasEnding
-    elsif [:UNNERVE, :ASONECHILLINGNEIGH, :ASONEGRIMNEIGH].include?(oldAbil) &&
+    elsif [:ASONECHILLINGNEIGH, :ASONEGRIMNEIGH].include?(oldAbil) &&
           (suppressed || !@effects[PBEffects::GastroAcid])
       pbItemsOnBlockEnding
     elsif oldAbil == :ILLUSION && @effects[PBEffects::Illusion]
@@ -210,7 +210,7 @@ class Battle::Battler
   # Held item consuming/removing
   #=============================================================================
   def canConsumeBerry?
-    return false if @battle.pbCheckOpposingAbility([:UNNERVE, :ASONECHILLINGNEIGH, :ASONEGRIMNEIGH], @index)
+    return false if @battle.pbCheckOpposingAbility([:ASONECHILLINGNEIGH, :ASONEGRIMNEIGH], @index)
     return true
   end
 
