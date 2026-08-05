@@ -340,6 +340,10 @@ class Battle::Move
     if user.effects[PBEffects::ParentalBond] == 1
       multipliers[:power_multiplier] /= (Settings::MECHANICS_GENERATION >= 7) ? 4 : 2
     end
+    #Two-Pronged second attack
+    #if user.effects[PBEffects::TwoPronged] == 1
+    #  multipliers[:power_multiplier] /= 4
+    #end
     # Other
     if user.effects[PBEffects::MeFirst]
       multipliers[:power_multiplier] *= 1.5

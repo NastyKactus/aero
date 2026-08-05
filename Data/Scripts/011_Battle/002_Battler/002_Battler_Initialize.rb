@@ -229,6 +229,7 @@ class Battle::Battler
     end
     @effects[PBEffects::Outrage]             = 0
     @effects[PBEffects::ParentalBond]        = 0
+    #@effects[PBEffects::TwoPronged]          = 0
     @effects[PBEffects::PickupItem]          = nil
     @effects[PBEffects::PickupUse]           = 0
     @effects[PBEffects::Pinch]               = false
